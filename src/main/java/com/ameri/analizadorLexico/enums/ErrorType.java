@@ -13,7 +13,7 @@ public enum ErrorType {
     KEYWORDERROR("Error de palabra reservada", "La palabra ingresada no forma parte del lenguaje."),
     EQUALSERROR("Error del signo igual", "El signo tiene un error"),
     SPECIALERROR("Error especial", "El valor no forma parte del alfabeto."),
-    ZEROERROR("Error de cero", "El cero no puede venir a compañado de más números.");
+    ZEROERROR("Error de cero", "Se esperaba solamente el número cero.");
     //FIN ERROR
     private String type;
     private String message;

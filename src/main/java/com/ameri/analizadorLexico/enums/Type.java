@@ -3,11 +3,11 @@ package com.ameri.analizadorLexico.enums;
 
 public enum Type {
     
-    IDENTIFICADOR("identificador"),
-    ENTERO("entero"),
+    IDENTIFICADOR("IDENTIFICADOR"),
+    NUMERO("NUMERO"),
     OPERADOR("operador"),
     AGRUPACION("agrupacion"),
-    LITERAL("literal"),
+    LITERAL("LITERAL"),
     COMENTARIO("comentario"),
     COMILLA("comilla"),
     COMILLA_SIMPLE("comilla simple"),
@@ -16,7 +16,7 @@ public enum Type {
     MENOS("Menos"),
     GUION_BAJO("Guión bajo"),
     MAYOR_MENOR("mayor/menor"),
-    PALABRAS_RESERVADAS("palabras reservadas"),
+    PALABRAS_RESERVADAS("PALABRAS RESERVADAS"),
     OTRO("otro");
 
     private String type;

@@ -20,25 +20,25 @@ public enum KeyWord {
     public String getValue() {return value;}
 
     public static KeyWord value(String value){
-        if(ESCRIBIR.getValue().equalsIgnoreCase(value)){
+        if(ESCRIBIR.getValue().equals(value)){
             return ESCRIBIR;
-        } else if(ENTONCES.getValue().equalsIgnoreCase(value)){
+        } else if(ENTONCES.getValue().equals(value)){
             return ENTONCES;
-        } else if(SI.getValue().equalsIgnoreCase(value)){
+        } else if(SI.getValue().equals(value)){
             return SI;
-        } else if(FALSO.getValue().equalsIgnoreCase(value)){
+        } else if(FALSO.getValue().equals(value)){
 
             return FALSO;
-        } else if(FIN.getValue().equalsIgnoreCase(value)){
+        } else if(FIN.getValue().equals(value)){
 
             return FIN;
-        } else if(VERDADERO.getValue().equalsIgnoreCase(value)){
+        } else if(VERDADERO.getValue().equals(value)){
 
             return VERDADERO;
-        } else if(REPETIR.getValue().equalsIgnoreCase(value)){
+        } else if(REPETIR.getValue().equals(value)){
 
             return REPETIR;
-        } else if(INICIAR.getValue().equalsIgnoreCase(value)){
+        } else if(INICIAR.getValue().equals(value)){
 
             return INICIAR;
         }

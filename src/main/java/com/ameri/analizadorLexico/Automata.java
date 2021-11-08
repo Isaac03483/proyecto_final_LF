@@ -3,11 +3,11 @@ package com.ameri.analizadorLexico;
 
 
 import com.ameri.analizadorLexico.enums.ErrorType;
+import com.ameri.analizadorLexico.enums.KeyWord;
 import com.ameri.analizadorLexico.enums.Type;
 import com.ameri.analizadorLexico.error.Error;
 import com.ameri.analizadorLexico.token.Token;
 import com.ameri.backend.Character;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -264,13 +264,13 @@ public class Automata{
             if(character == '0'){
                 if(this.actualStatus == 0){
                     if(type != Type.LITERAL && type != Type.COMENTARIO && type != Type.IDENTIFICADOR){
-                        type = Type.ENTERO;
+                        type = Type.NUMERO;
                         errorType= ErrorType.ZEROERROR;
                     }
                     result = 6;
                 } else{
                     if(type != Type.LITERAL && type != Type.COMENTARIO && type != Type.IDENTIFICADOR){
-                        type = Type.ENTERO;
+                        type = Type.NUMERO;
                         errorType= ErrorType.ZEROERROR;
                     }
                     result = 7;
@@ -281,7 +281,7 @@ public class Automata{
                     result = 6;
                 } else {
                     if(type != Type.LITERAL && type != Type.COMENTARIO && type != Type.IDENTIFICADOR){
-                        type = Type.ENTERO;
+                        type = Type.NUMERO;
                         errorType= ErrorType.NUMBERERROR;
                     }
                     result = 8;
@@ -296,14 +296,12 @@ public class Automata{
                 if(type != Type.LITERAL && type != Type.COMENTARIO){
                     type = Type.COMENTARIO;
                 }
-            } else {
-                saveToken(row,column);
             }
             result = 9;
         } else if (Character.isAlphabetic(character)){
             if(Character.isMayus(character)){
                 if(this.actualStatus == 0 || this.actualStatus == 5){
-                    if(type != Type.LITERAL && type != Type.COMENTARIO){
+                    if(type != Type.LITERAL && type != Type.COMENTARIO  && type != Type.NUMERO){
                         type = Type.PALABRAS_RESERVADAS;
                         errorType= ErrorType.KEYWORDERROR;
                     }
@@ -312,7 +310,7 @@ public class Automata{
                     result = 10;
                 }
             } else {
-                if(type != Type.LITERAL && type != Type.COMENTARIO && type != Type.PALABRAS_RESERVADAS){
+                if(type != Type.LITERAL && type != Type.COMENTARIO && type != Type.PALABRAS_RESERVADAS && type != Type.NUMERO){
                     type = Type.IDENTIFICADOR;
                     errorType= ErrorType.IDERROR;
                 }
@@ -350,20 +348,20 @@ public class Automata{
     public void evaluar(){
 
         int row = 1;
-
+        int column = 0;
         for(int i = 0; i < chars.length+1; i++){
             if(i < chars.length){
-                reader(chars[i], row, i);
-
+                column++;
+                reader(chars[i], row, column);
                 if(Character.isEndLine(chars[i])){
                     row++;
+                    column = 0;
                 }
             } else{
                 if(actualStatus != -1 && actualStatus != 6){
-                    saveToken(row, i);
+                    saveToken(row, column);
                 } else {
-                    saveError(row, i);
-                    error = true;
+                    saveError(row, column);
 
                 }
             }
@@ -371,41 +369,46 @@ public class Automata{
     }
 
     public void reader(char character, int row, int column){
-        if(!Character.isSpaceChar(character) && !Character.isEndLine(character)){
-            oldStatus = actualStatus;
-            actualStatus = transition[actualStatus][getCharacterInt(character, row, column)];
-            tokenString+=character;
-            if(Character.isEquals(character) || Character.isGroupingSign(character) || Character.isGreaterOrLess(character) || Character.isOperationSign(character)){
-                if(type != Type.LITERAL){
-                    saveToken(row, column);
-                }
-            }
-        } else{
-            switch (actualStatus){
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 7:
-                case 8:
-                case 9:
-                case 10:
-                    System.out.println("entra");
-                    saveToken(row, column);
-                    break;
-                default:
-                    if(Character.isSpaceChar(character)){
-                        if(actualStatus != 6){
-                            saveError(row, column);
-                            error = true;
-                        } else{
-                            tokenString+=character;
+        if(!Character.isSpecialCharacter(character)){
+            if(!Character.isSpaceChar(character) && !Character.isEndLine(character)){
+                oldStatus = actualStatus;
+                int change = getCharacterInt(character, row, column);
+                actualStatus = transition[actualStatus][change];
+                tokenString+=character;
+                if(actualStatus == -1){
+                    saveError(row, column);
+                } else {
+                    if(Character.isEquals(character) || Character.isGroupingSign(character) || Character.isGreaterOrLess(character) || Character.isOperationSign(character)){
+                        if(type != Type.LITERAL){
+                            saveToken(row, column);
                         }
-                    } else {
-                        saveError(row, column);
-                        error = true;
                     }
-                    break;
+                }
+            } else{
+                switch (actualStatus){
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        saveToken(row, column);
+                        break;
+                    default:
+                        if(Character.isSpaceChar(character)){
+                            if(actualStatus != 6){
+                                saveError(row, column);
+
+                            } else{
+                                tokenString+=character;
+                            }
+                        } else {
+                            saveError(row, column);
+                        }
+                        break;
+                }
             }
         }
     }
@@ -417,6 +420,7 @@ public class Automata{
             type = null;
             errorType = null;
             actualStatus = 0;
+            error = true;
         }
 
     }
@@ -424,11 +428,23 @@ public class Automata{
     public void saveToken(int row, int column){
 
         if(tokenString.length() > 0 && actualStatus != 0){
-            tokenList.add(new Token(tokenString.trim(), type,column,row));
-            tokenString="";
-            type = null;
-            errorType = null;
-            actualStatus = 0;
+            if(actualStatus == 5){
+                if(KeyWord.value(tokenString.trim()) != null){
+                    tokenList.add(new Token(tokenString.trim(), type,column,row));
+                    tokenString="";
+                    type = null;
+                    errorType = null;
+                    actualStatus = 0;
+                } else {
+                    saveError(row,column);
+                }
+            } else {
+                tokenList.add(new Token(tokenString.trim(), type,column,row));
+                tokenString="";
+                type = null;
+                errorType = null;
+                actualStatus = 0;
+            }
         }
     }
 

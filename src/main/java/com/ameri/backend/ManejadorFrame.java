@@ -1,7 +1,9 @@
 package com.ameri.backend;
 
 import com.ameri.analizadorLexico.Automata;
+import com.ameri.analizadorLexico.enums.Type;
 import com.ameri.analizadorLexico.token.Token;
+import com.ameri.analizadorSintactico.Sintactico;
 import com.ameri.swing.FramePrincipal;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class ManejadorFrame {
 
     public void analizadorInit(){
 
+        this.principal.getjTextAreaDos().setText("");
         char[] chars = this.principal.getjTextAreaUno().getText().toCharArray();
         Automata automata = new Automata(chars);
         automata.evaluar();
@@ -59,13 +62,19 @@ public class ManejadorFrame {
         if(!this.error){
             tokenList = automata.getTokenList();
 
-            tokenList.forEach(t -> System.out.println(t.getString()+" "+t.getType().getType()));
+            syntacticInit(tokenList);
         } else {
             tokenList = automata.getErrorList();
             this.principal.getjTextAreaDos().setText("");
             System.out.println(tokenList.size());
-            tokenList.forEach(t -> this.principal.getjTextAreaDos().append(t.getString()+" "+t.getError().getErrorType().getMessage()+"\n"));
+            tokenList.forEach(t -> this.principal.getjTextAreaDos().append(t.getString()+" "+t.getError().getErrorType().getMessage()+" FILA:"+t.getError().getRow()+" COLUMNA: "+t.getError().getColumn()+"\n"));
         }
+    }
+
+    private void syntacticInit(List<Token> tokenList) {
+        tokenList.removeIf(t -> t.getType() == Type.COMENTARIO);
+        Sintactico sintactico = new Sintactico(tokenList);
+        sintactico.evaluar();
     }
 
 }

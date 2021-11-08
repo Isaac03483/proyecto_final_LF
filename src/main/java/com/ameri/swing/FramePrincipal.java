@@ -21,6 +21,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.jTextArea2.setEditable(false);
+        this.setResizable(false);
         manejadorFrame = new ManejadorFrame(this);
         etiquetaDetalle.setText("Fil: 0. Col: 0.");
     }

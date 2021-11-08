@@ -13,6 +13,7 @@ public class Character{
     private static final char[] digit = {'0','1', '2', '3', '4', '5', '6', '7', '8', '9'};
     private static final char[] punctuationMarks = {',', ';', ':'};
     private static final char[] greaterLess = {'<', '>'};
+    private static final char[] specialCharacters = {'\r','\t','\f'};
     private static final char comillaSimple = '\'';
     private static final char comilla = '"';
     private static final char equals = '=';
@@ -144,6 +145,15 @@ public class Character{
 
     public static boolean isGreaterOrLess(char character){
         for(char value: greaterLess){
+            if(character == value){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSpecialCharacter(char character){
+        for(char value: specialCharacters){
             if(character == value){
                 return true;
             }
