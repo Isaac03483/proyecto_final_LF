@@ -141,102 +141,112 @@ public class Sintactico {
             }
             System.out.println("ESTE ES EL ULTIMO VALOR DE LA PILA "+pila.peek());
             if(isNoTerminal(pila.peek())){
-                int result = matriz[rowStatus][colStatus];
-                System.out.println(rowStatus+" "+colStatus+"="+result);
-                pila.pop();
-                if(result != -2){
-                    if(result == -1){
-                        System.out.println("CIERRE DEL AUTOMATA A LA FUERZA");
-                        pila.removeAllElements();
-                    } else{
-                        for(int i = values[result].length-1; i >= 0; i--){
-                            pila.push(values[result][i]);
-                        }
-                    }
-                } else {
-                    pila.push(epsilon);
-                }
+                setLastValue();
             }else{
-                if(pila.peek().equals(endStack) || pila.peek().equals(epsilon)){
-                    System.out.println("SACANDO VALOR: "+pila.peek());
-                    pila.pop();
-                } else {
-                    switch (colStatus){
-                        case 0: if(pila.peek().equals(KeyWord.ESCRIBIR.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 1: if(pila.peek().equals(KeyWord.REPETIR.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 2: if(pila.peek().equals(KeyWord.SI.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 3: if(pila.peek().equals(KeyWord.ENTONCES.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 4:
-                        case 5:
-                        case 6: if(pila.peek().equals(tokenEvaluando.getType().getType())){
-                            System.out.println(tokenEvaluando.getString());
-                            pila.pop();
-                        }
-                        break;
-                        case 7: if(pila.peek().equals("+")){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 8: if(pila.peek().equals("*")){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 9: if(pila.peek().equals(KeyWord.FIN.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        case 10: if(pila.peek().equals("(")){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 11: if(pila.peek().equals(")")){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 12: if(pila.peek().equals(KeyWord.VERDADERO.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 13: if(pila.peek().equals(KeyWord.FALSO.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 14: if(pila.peek().equals(KeyWord.INICIAR.getValue())){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                        case 15: if(pila.peek().equals("=")){
-                            System.out.println(pila.peek());
-                            pila.pop();
-                        }
-                        break;
-                    }
-                    tokenEvaluando = null;
+                getPilaValue();
+            }
+        }
+    }
+
+    private void setLastValue() {
+        int result = matriz[rowStatus][colStatus];
+        System.out.println(rowStatus+" "+colStatus+"="+result);
+        pila.pop();
+        if(result != -2){
+            if(result == -1){
+                System.out.println("ERROR AL ANALIZAR: "+tokenEvaluando);
+                pila.pop();
+                tokenEvaluando = null;
+                //pila.removeAllElements();
+            } else{
+                for(int i = values[result].length-1; i >= 0; i--){
+                    pila.push(values[result][i]);
                 }
             }
+        } else {
+            pila.push(epsilon);
+        }
+    }
+
+    private void getPilaValue(){
+        if(pila.peek().equals(endStack) || pila.peek().equals(epsilon)){
+            System.out.println("SACANDO DE LA PILA: "+pila.peek());
+            pila.pop();
+        } else {
+            switch (colStatus){
+                case 0: if(pila.peek().equals(KeyWord.ESCRIBIR.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 1: if(pila.peek().equals(KeyWord.REPETIR.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 2: if(pila.peek().equals(KeyWord.SI.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 3: if(pila.peek().equals(KeyWord.ENTONCES.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 4:
+                case 5:
+                case 6: if(pila.peek().equals(tokenEvaluando.getType().getType())){
+                    System.out.println("SACANDO DE LA PILA "+tokenEvaluando.getString());
+                    pila.pop();
+                }
+                    break;
+                case 7: if(pila.peek().equals("+")){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 8: if(pila.peek().equals("*")){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 9: if(pila.peek().equals(KeyWord.FIN.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                case 10: if(pila.peek().equals("(")){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 11: if(pila.peek().equals(")")){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 12: if(pila.peek().equals(KeyWord.VERDADERO.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 13: if(pila.peek().equals(KeyWord.FALSO.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 14: if(pila.peek().equals(KeyWord.INICIAR.getValue())){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+                case 15: if(pila.peek().equals("=")){
+                    System.out.println("SACANDO DE LA PILA "+pila.peek());
+                    pila.pop();
+                }
+                    break;
+            }
+            tokenEvaluando = null;
         }
     }
 
