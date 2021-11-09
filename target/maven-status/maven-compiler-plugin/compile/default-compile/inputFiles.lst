@@ -1,0 +1,11 @@
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/backend/Character.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorSintactico/Sintactico.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/backend/ManejadorFrame.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/Automata.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/main/App.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/token/Token.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/enums/KeyWord.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/error/Error.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/enums/ErrorType.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/analizadorLexico/enums/Type.java
+/home/ameri/Escritorio/2021/proyecto_final_LF/src/main/java/com/ameri/swing/FramePrincipal.java

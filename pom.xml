@@ -6,6 +6,7 @@
 
   <groupId>com.ameri</groupId>
   <artifactId>proyecto_final_LF</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
   <name>proyecto_final_LF</name>
