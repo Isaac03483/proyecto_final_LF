@@ -7,6 +7,7 @@ import com.ameri.analizadorSintactico.Sintactico;
 import com.ameri.swing.FramePrincipal;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,11 +121,32 @@ public class ManejadorFrame {
     public void guardar(){
         try{
             if(this.archivoBuscar != null){
-                BufferedWriter writer = new BufferedWriter(new FileWriter(this.archivoBuscar));
-                writer.write(this.principal.getjTextAreaUno().getText().toCharArray());
-                System.out.println("SE ESTA GUARDANDO EL ARCHIVO");
+                FileWriter writer = new FileWriter(this.archivoBuscar);
+                writer.write(this.principal.getjTextAreaUno().getText());
+                writer.close();
+                JOptionPane.showMessageDialog(null, "El archivo se guardó con éxito.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                guardarComo();
             }
         } catch (IOException ignored){
+
+        }
+    }
+
+    public void guardarComo() {
+        try {
+
+            FileDialog guardar = null;
+            guardar = new FileDialog(guardar, "Guardar Como", FileDialog.SAVE);
+            guardar.setVisible(true);
+            guardar.dispose();
+            if(guardar.getName() != null && guardar.getDirectory() != null){
+                FileWriter writer = new FileWriter(guardar.getDirectory()+guardar.getFile()+".txt");
+                writer.write(this.principal.getjTextAreaUno().getText());
+                writer.close();
+                JOptionPane.showMessageDialog(null, "El archivo se guardó con éxito.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }catch (IOException ignored){
 
         }
     }
