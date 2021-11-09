@@ -139,18 +139,20 @@ public class Sintactico {
                 this.getToken();
                 this.getStatus();
             }
-            System.out.println("ESTE ES EL ULTIMO VALOR DE LA PILA "+pila.peek());
+            System.out.println("\u001B[34m"+"******************PILA ACTUAL*********************"+"\u001B[0m");
+            pila.forEach(System.out::println);
+            System.out.println("\u001B[34m"+"*******************************************"+"\u001B[0m");
             if(isNoTerminal(pila.peek())){
                 setLastValue();
             }else{
                 getPilaValue();
             }
         }
+        System.out.println("FIN DE LA PILA");
     }
 
     private void setLastValue() {
         int result = matriz[rowStatus][colStatus];
-        System.out.println(rowStatus+" "+colStatus+"="+result);
         pila.pop();
         if(result != -2){
             if(result == -1){
