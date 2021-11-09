@@ -215,6 +215,7 @@ public class Sintactico {
                     System.out.println("SACANDO DE LA PILA "+pila.peek());
                     pila.pop();
                 }
+                break;
                 case 10: if(pila.peek().equals("(")){
                     System.out.println("SACANDO DE LA PILA "+pila.peek());
                     pila.pop();

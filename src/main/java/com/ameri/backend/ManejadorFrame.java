@@ -6,6 +6,8 @@ import com.ameri.analizadorLexico.token.Token;
 import com.ameri.analizadorSintactico.Sintactico;
 import com.ameri.swing.FramePrincipal;
 
+import javax.swing.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,12 @@ public class ManejadorFrame {
     private int column;
     private List<Token> tokenList = new ArrayList<>();
     private boolean error;
+    private String archivoBuscar;
 
     {
         this.row = 1;
         this.column=0;
+        archivoBuscar = null;
     }
 
     public ManejadorFrame(FramePrincipal principal) {
@@ -75,6 +79,54 @@ public class ManejadorFrame {
         tokenList.removeIf(t -> t.getType() == Type.COMENTARIO);
         Sintactico sintactico = new Sintactico(tokenList);
         sintactico.evaluar();
+    }
+
+    public void abrir(){
+        JFileChooser buscarArchivo = new JFileChooser();
+        int opcion = buscarArchivo.showOpenDialog(this.principal);
+
+        if(opcion == JFileChooser.APPROVE_OPTION){
+
+            this.archivoBuscar = buscarArchivo.getSelectedFile().getAbsolutePath();
+
+            try{
+                File archivoLeer = new File(archivoBuscar);
+                if(archivoLeer.exists()){
+                    escribirArchivo(archivoLeer);
+
+                }
+            } catch(NullPointerException ignored){
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private void escribirArchivo(File archivoLeer) throws IOException {
+
+        this.principal.getjTextAreaUno().setText("");
+        BufferedReader reader = new BufferedReader(new FileReader(archivoLeer));
+        String line = reader.readLine();
+
+        while (line != null){
+            this.principal.getjTextAreaUno().append(line+"\n");
+            line = reader.readLine();
+        }
+    }
+
+    public void guardar(){
+        try{
+            if(this.archivoBuscar != null){
+                BufferedWriter writer = new BufferedWriter(new FileWriter(this.archivoBuscar));
+                writer.write(this.principal.getjTextAreaUno().getText().toCharArray());
+                System.out.println("SE ESTA GUARDANDO EL ARCHIVO");
+            }
+        } catch (IOException ignored){
+
+        }
     }
 
 }
